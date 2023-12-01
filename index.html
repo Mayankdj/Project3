@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Chocolate Pack</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .chocolate-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Build Your Custom Chocolate Pack</h1>
+
+<div id="chocolate-items">
+    <div class="chocolate-item" data-name="Dark Chocolate" data-price="2.5">
+        <span>Dark Chocolate</span>
+        <button onclick="addItem(this)">Add</button>
+    </div>
+    <div class="chocolate-item" data-name="Milk Chocolate" data-price="2">
+        <span>Milk Chocolate</span>
+        <button onclick="addItem(this)">Add</button>
+    </div>
+    <div class="chocolate-item" data-name="White Chocolate" data-price="3">
+        <span>White Chocolate</span>
+        <button onclick="addItem(this)">Add</button>
+    </div>
+</div>
+
+<h2>Your Custom Pack</h2>
+<div id="selected-items">
+</div>
+
+<p>Total Price: $<span id="total-price">0</span></p>
+
+<script>
+    const selectedItems = [];
+
+    function addItem(button) {
+        const chocolateItem = button.parentNode;
+        const itemName = chocolateItem.dataset.name;
+        const itemPrice = parseFloat(chocolateItem.dataset.price);
+
+        if (selectedItems.length < 8) {
+            selectedItems.push({ name: itemName, price: itemPrice });
+            updateSelectedItems();
+            updateTotalPrice();
+        } else {
+            alert("Maximum 8 items allowed in your custom pack.");
+        }
+    }
+
+    function removeItem(index) {
+        selectedItems.splice(index, 1);
+        updateSelectedItems();
+        updateTotalPrice();
+    }
+
+    function updateSelectedItems() {
+        const selectedItemsContainer = document.getElementById("selected-items");
+        selectedItemsContainer.innerHTML = "";
+
+        selectedItems.forEach((item, index) => {
+            const itemDiv = document.createElement("div");
+            itemDiv.innerHTML = `${item.name} - $${item.price} <button onclick="removeItem(${index})">Remove</button>`;
+            selectedItemsContainer.appendChild(itemDiv);
+        });
+    }
+
+    function updateTotalPrice() {
+        const totalPriceSpan = document.getElementById("total-price");
+        const totalPrice = selectedItems.reduce((sum, item) => sum + item.price, 0);
+        totalPriceSpan.textContent = totalPrice.toFixed(2);
+    }
+</script>
+
+</body>
+</html>
